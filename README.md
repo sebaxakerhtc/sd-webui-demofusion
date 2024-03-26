@@ -1,6 +1,8 @@
 # DemoFusion extension for stable-diffusion-webui
 Readme will be updated soon!
 
+[Original project](https://ruoyidu.github.io/demofusion/demofusion.html)
+
 For now only originally work with `camenduru/DemoFusion` (can be replaced by editing line 15 of scripts/iface.py)
 Tested and works also with `stablediffusionapi/pony-diffusion-v6-xl`
 
