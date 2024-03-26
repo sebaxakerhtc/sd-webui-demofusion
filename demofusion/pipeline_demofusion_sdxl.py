@@ -507,9 +507,6 @@ class DemoFusionSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderM
             )
 
         # DemoFusion specific checks
-        if max(height, width) % 1024 != 0:
-            raise ValueError(f"the larger one of `height` and `width` has to be divisible by 1024 but are {height} and {width}.")
-
         if num_images_per_prompt != 1:
             warnings.warn("num_images_per_prompt != 1 is not supported by DemoFusion and will be ignored.")
             num_images_per_prompt = 1
