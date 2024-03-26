@@ -37,9 +37,9 @@ def on_ui_tabs():
                 inputs = [
                     gr.Textbox(label="Prompt"),
                     gr.Textbox(label="Negative Prompt", value="blurry, ugly, duplicate, poorly drawn, deformed, mosaic"),
-                    gr.Slider(minimum=1024, maximum=4096, step=1024, value=2048, label="Height"),
-                    gr.Slider(minimum=1024, maximum=4096, step=1024, value=2048, label="Width"),
-                    gr.Slider(minimum=10, maximum=100, step=1, value=50, label="Num Inference Steps"),
+                    gr.Slider(minimum=1024, maximum=4096, step=8, value=2048, label="Height"),
+                    gr.Slider(minimum=1024, maximum=4096, step=8, value=2048, label="Width"),
+                    gr.Slider(minimum=10, maximum=100, step=1, value=30, label="Num Inference Steps"),
                     gr.Slider(minimum=1, maximum=20, step=0.1, value=7.5, label="Guidance Scale"),
                     gr.Slider(minimum=0, maximum=5, step=0.1, value=3, label="Cosine Scale 1"),
                     gr.Slider(minimum=0, maximum=5, step=0.1, value=1, label="Cosine Scale 2"),
