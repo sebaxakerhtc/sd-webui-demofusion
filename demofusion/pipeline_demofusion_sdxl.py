@@ -104,7 +104,7 @@ def rescale_noise_cfg(noise_cfg, noise_pred_text, guidance_rescale=0.0):
     return noise_cfg
 
 
-class DemoFusionSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMixin, TextualInversionLoaderMixin):
+class DemoFusionSDXLStableDiffusionPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMixin, TextualInversionLoaderMixin):
     """
     Pipeline for text-to-image generation using Stable Diffusion XL.
 

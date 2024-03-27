@@ -1,19 +1,26 @@
 import gradio as gr
 from pathlib import Path
-from modules import script_callbacks, shared
+from modules import script_callbacks, shared, paths, modelloader
 import json
 import os
 import torch
+import os.path
 
-from demofusion.pipeline_demofusion_sdxl import DemoFusionSDXLPipeline
+from demofusion.pipeline_demofusion_sdxl import DemoFusionSDXLStableDiffusionPipeline
 # from gradio_imageslider import ImageSlider
 
 # Webui root path
 ROOT_DIR = Path().absolute()
+model_dir = "Stable-diffusion"
+model_path = os.path.abspath(os.path.join(paths.models_path, model_dir))
+model_list = modelloader.load_models(model_path=model_path, ext_filter=[".ckpt", ".safetensors"])
+
+def set_checkpoint_model(selected_value):
+    global model_ckpt
+    model_ckpt = selected_value
 
 def generate_images(prompt, negative_prompt, width, height, num_inference_steps, guidance_scale, cosine_scale_1, cosine_scale_2, cosine_scale_3, sigma, view_batch_size, stride, seed):
-    model_ckpt = "camenduru/DemoFusion"
-    pipe = DemoFusionSDXLPipeline.from_pretrained(model_ckpt, torch_dtype=torch.float16)
+    pipe = DemoFusionSDXLStableDiffusionPipeline.from_single_file(model_ckpt, torch_dtype=torch.float16, use_safetensors=True)
     pipe = pipe.to("cuda")
 
     generator = torch.Generator(device='cuda')
@@ -32,6 +39,10 @@ def on_ui_tabs():
     with gr.Blocks(analytics_enabled=False) as DF_Blocks:
         gr.HTML(
             "<p id='demofusion',style=\"margin-bottom:0.75em\">DemoFusion extension for Automatic1111</p>")
+        with gr.Row():
+            with gr.Column(scale=45):
+                df_ckpt_file = gr.Dropdown(model_list, label="Model", info="Only SDXL checkpoints are supported at the moment")
+                df_ckpt_file.change(set_checkpoint_model, inputs=df_ckpt_file, outputs=df_ckpt_file.value)
         with gr.Row():
             with gr.Column(scale=45):
                 inputs = [
