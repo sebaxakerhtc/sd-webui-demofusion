@@ -4,7 +4,7 @@ Readme will be updated soon!
 [Original project](https://ruoyidu.github.io/demofusion/demofusion.html)
 
 - Added support for stable diffusion files
-- Added support for custom GuggingFace models
+- Added support for custom HuggingFace models
 - Rebuild UI
 - something else?
 
