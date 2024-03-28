@@ -46,7 +46,7 @@ def set_path_hf():
     # model_vae = "madebyollin/sdxl-vae-fp16-fix"
 
 def generate_images(prompt, negative_prompt, width, height, num_inference_steps, guidance_scale, cosine_scale_1, cosine_scale_2, cosine_scale_3, sigma, view_batch_size, stride, seed):
-    vae = df_vae_path(model_vae)
+    # vae = df_vae_path(model_vae)
     pipe = df_model_path(model_ckpt, use_safetensors=True, torch_dtype=torch.float16)
     pipe = pipe.to("cuda")
 
