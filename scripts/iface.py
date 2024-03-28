@@ -68,7 +68,7 @@ def on_ui_tabs():
             with gr.Tab("Stable Diffusion") as sd:
                 with gr.Row():
                     sd_ckpt_file = gr.Dropdown(model_list, label="Model (Only SDXL Models are supported for now)", info="Stable Diffusion Model")
-                    sd_vae_file = gr.Dropdown(vae_list, label="VAE", info="Vae Model")
+                    sd_vae_file = gr.Dropdown(vae_list, label="VAE", info="Vae Model (coming soon)")
             with gr.Tab("HuggingFace") as hf:
                 with gr.Row():
                     hf_ckpt_file = gr.Textbox(label="Model (Only SDXL Models are supported for now)", placeholder="default:camenduru/DemoFusion", info="HuggingFace Model Path")
