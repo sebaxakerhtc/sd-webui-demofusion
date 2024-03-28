@@ -1,7 +1,9 @@
 # DemoFusion extension for stable-diffusion-webui
 Readme will be updated soon!
 
-[Original project](https://ruoyidu.github.io/demofusion/demofusion.html)
+[Original project](https://ruoyidu.github.io/demofusion/demofusion.html) 
+
+[Original project GitHub](https://github.com/PRIS-CV/DemoFusion)
 
 - Added support for stable diffusion files
 - Added support for custom HuggingFace models
