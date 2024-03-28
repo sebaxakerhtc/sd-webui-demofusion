@@ -1,4 +1,4 @@
-# DemoFusion extension for stable-diffusion-webui
+# DemoFusion interface inside stable-diffusion-webui
 Readme will be updated soon!
 
 [Original project](https://ruoyidu.github.io/demofusion/demofusion.html) 
