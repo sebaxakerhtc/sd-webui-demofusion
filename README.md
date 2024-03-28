@@ -3,7 +3,10 @@ Readme will be updated soon!
 
 [Original project](https://ruoyidu.github.io/demofusion/demofusion.html)
 
-For now only originally work with `camenduru/DemoFusion` (can be replaced by editing line 15 of scripts/iface.py)
-Tested and works also with `stablediffusionapi/pony-diffusion-v6-xl`
+- Added support for stable diffusion files
+- Added support for custom GuggingFace models
+- Rebuild UI
+- something else?
 
-![316684876-4306af7d-2b70-41b0-b455-21d77740b07b](https://github.com/sebaxakerhtc/sd-webui-demofusion/assets/32651506/000e63fc-575e-4016-abc1-cc1fbd9dcc66)
+![изображение](https://github.com/sebaxakerhtc/sd-webui-demofusion/assets/32651506/c3af3c42-0609-4f6f-96cd-e1c8f095940b)
+
