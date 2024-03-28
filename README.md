@@ -8,7 +8,7 @@ Readme will be updated soon!
 - Rebuild UI
 - something else?
 
-Installation:
+## Installation:
 Extensions => Install from URL => `https://github.com/sebaxakerhtc/sd-webui-demofusion.git` => Install
 Then switch to installed tab, click Apply and restart UI
 
