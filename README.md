@@ -1,10 +1,18 @@
 # DemoFusion interface inside stable-diffusion-webui
-Readme will be updated soon!
+
+![изображение](https://github.com/sebaxakerhtc/sd-webui-demofusion/assets/32651506/7e12dc76-124f-4d0a-bed6-0c8214585e79)
 
 [Original project](https://ruoyidu.github.io/demofusion/demofusion.html) 
 
 [Original project GitHub](https://github.com/PRIS-CV/DemoFusion)
 
+29.03.2024
+- Removed HuggingFace because in a1111 nobody use it
+- added VAE support
+- added LoRA and lora_scale(weight) support
+- random seed on load
+- other optimisations
+28.03.2024
 - Added support for stable diffusion files
 - Added support for custom HuggingFace models
 - Rebuild UI
@@ -22,11 +30,9 @@ The output will be 1401 x 2048, because the largest width/height must be divisib
 But if you will set image size 1401 x 2048 - the original image size of generated image will be 704 x 1024 - it's
 bad resolution for SDXL.
 
-![изображение](https://github.com/sebaxakerhtc/sd-webui-demofusion/assets/32651506/c3af3c42-0609-4f6f-96cd-e1c8f095940b)
-
 To do:
 - img2img
-- LoRA support
+- ~~- LoRA support~~
 - ControlNet, maybe...
 - Custom resolutions
 - SD 1.5 adaptation? Maybe...
