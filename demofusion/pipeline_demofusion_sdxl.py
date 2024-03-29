@@ -897,7 +897,8 @@ class DemoFusionSDXLStableDiffusionPipeline(DiffusionPipeline, FromSingleFileMix
             self.unet.cpu()
             self.text_encoder.to(device)
             self.text_encoder_2.to(device)
-            image_lr.cpu()
+            try image_lr: image_lr.cpu()
+            except NameError: pass
 
         # here `guidance_scale` is defined analog to the guidance weight `w` of equation (2)
         # of the Imagen paper: https://arxiv.org/pdf/2205.11487.pdf . `guidance_scale = 1`
