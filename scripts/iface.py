@@ -134,7 +134,7 @@ def on_ui_tabs():
                     m_guidance_scale = gr.Slider(minimum=1.1, maximum=20, step=0.1, value=7.5, label="CFG Scale")
                 with gr.Row():
                     m_seed = gr.Number(scale=90, label="Seed", value=2013)
-                    clip_skip = gr.Number(scale=10, label="Clip skip", minimum=1, maximum=12, step=1, value=1)
+                    clip_skip = gr.Number(scale=10, label="Clip skip", minimum=1, maximum=12, step=1, value=2)
                 with gr.Accordion('Additional parameters', open=False):
                     m_sigma = gr.Slider(minimum=0.1, maximum=1, step=0.1, value=0.8, label="Sigma")
                     with gr.Row():
