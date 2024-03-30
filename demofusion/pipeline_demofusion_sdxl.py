@@ -233,6 +233,7 @@ class DemoFusionSDXLStableDiffusionPipeline(DiffusionPipeline, FromSingleFileMix
         pooled_prompt_embeds: Optional[torch.FloatTensor] = None,
         negative_pooled_prompt_embeds: Optional[torch.FloatTensor] = None,
         lora_scale: Optional[float] = None,
+        clip_skip: Optional[int] = None,
     ):
         r"""
         Encodes the prompt into text encoder hidden states.
@@ -326,14 +327,15 @@ class DemoFusionSDXLStableDiffusionPipeline(DiffusionPipeline, FromSingleFileMix
                         f" {tokenizer.model_max_length} tokens: {removed_text}"
                     )
 
-                prompt_embeds = text_encoder(
-                    text_input_ids.to(device),
-                    output_hidden_states=True,
-                )
+                prompt_embeds = text_encoder(text_input_ids.to(device), output_hidden_states=True)
 
                 # We are only ALWAYS interested in the pooled output of the final text encoder
                 pooled_prompt_embeds = prompt_embeds[0]
-                prompt_embeds = prompt_embeds.hidden_states[-2]
+                if clip_skip is None:
+                    prompt_embeds = prompt_embeds.hidden_states[-2]
+                else:
+                    # "2" because SDXL always indexes from the penultimate layer.
+                    prompt_embeds = prompt_embeds.hidden_states[-(clip_skip + 2)]
 
                 prompt_embeds_list.append(prompt_embeds)
 
@@ -654,6 +656,10 @@ class DemoFusionSDXLStableDiffusionPipeline(DiffusionPipeline, FromSingleFileMix
             self.vae.decoder.conv_in.to(dtype)
             self.vae.decoder.mid_block.to(dtype)
 
+    @property
+    def clip_skip(self):
+        return self._clip_skip  
+        
     @torch.no_grad()
     @replace_example_docstring(EXAMPLE_DOC_STRING)
     def __call__(
@@ -687,6 +693,7 @@ class DemoFusionSDXLStableDiffusionPipeline(DiffusionPipeline, FromSingleFileMix
         negative_original_size: Optional[Tuple[int, int]] = None,
         negative_crops_coords_top_left: Tuple[int, int] = (0, 0),
         negative_target_size: Optional[Tuple[int, int]] = None,
+        clip_skip: Optional[int] = None,
         ################### DemoFusion specific parameters ####################
         image_lr: Optional[torch.FloatTensor] = None,
         view_batch_size: int = 16,
@@ -882,6 +889,7 @@ class DemoFusionSDXLStableDiffusionPipeline(DiffusionPipeline, FromSingleFileMix
             num_images_per_prompt,
         )
 
+        self._clip_skip = clip_skip
         # 2. Define call parameters
         if prompt is not None and isinstance(prompt, str):
             batch_size = 1
@@ -928,6 +936,7 @@ class DemoFusionSDXLStableDiffusionPipeline(DiffusionPipeline, FromSingleFileMix
             pooled_prompt_embeds=pooled_prompt_embeds,
             negative_pooled_prompt_embeds=negative_pooled_prompt_embeds,
             lora_scale=text_encoder_lora_scale,
+            clip_skip=clip_skip,
         )
 
         # 4. Prepare timesteps
