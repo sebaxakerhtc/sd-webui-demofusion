@@ -70,7 +70,7 @@ def set_lora_model(selected_lora):
     global model_lora
     model_lora = selected_lora
 
-def generate_images(prompt, negative_prompt, width, height, num_inference_steps, guidance_scale, cosine_scale_1, cosine_scale_2, cosine_scale_3, sigma, view_batch_size, stride, seed, set_lora_scale, input_image, cb_multidecoder):
+def generate_images(prompt, negative_prompt, width, height, num_inference_steps, guidance_scale, cosine_scale_1, cosine_scale_2, cosine_scale_3, sigma, view_batch_size, stride, seed, set_lora_scale, input_image, cb_multidecoder, clip_skip):
 
     if input_image:
         padded_image = pad_image(input_image).resize((1024, 1024)).convert("RGB")
@@ -99,7 +99,7 @@ def generate_images(prompt, negative_prompt, width, height, num_inference_steps,
                   height=int(height), width=int(width), view_batch_size=int(view_batch_size), stride=int(stride),
                   num_inference_steps=int(num_inference_steps), guidance_scale=guidance_scale,
                   cosine_scale_1=cosine_scale_1, cosine_scale_2=cosine_scale_2, cosine_scale_3=cosine_scale_3, sigma=sigma,
-                  multi_decoder=bool(cb_multidecoder), show_image=False, lowvram=False, image_lr=image_lr
+                  multi_decoder=bool(cb_multidecoder), show_image=False, lowvram=False, image_lr=image_lr, clip_skip=int(clip_skip)
                  )
 
     for i, image in enumerate(images):
@@ -132,7 +132,9 @@ def on_ui_tabs():
                 with gr.Row():
                     m_height = gr.Slider(minimum=768, maximum=8192, step=8, value=2048, label="Height")
                     m_guidance_scale = gr.Slider(minimum=1, maximum=20, step=0.1, value=7.5, label="CFG Scale")
-                m_seed = gr.Number(label="Seed", value=2013)
+                with gr.Row():
+                    m_seed = gr.Number(scale=90, label="Seed", value=2013)
+                    clip_skip = gr.Number(scale=10, label="Clip skip", minimum=1, maximum=12, step=1, value=1)
                 with gr.Accordion('Additional parameters', open=False):
                     m_sigma = gr.Slider(minimum=0.1, maximum=1, step=0.1, value=0.8, label="Sigma")
                     with gr.Row():
@@ -154,7 +156,7 @@ def on_ui_tabs():
 
         main_inputs = [m_prompt, m_negative_prompt, m_width, m_height, m_num_inference_steps,
         m_guidance_scale, m_cosine_scale_1, m_cosine_scale_2, m_cosine_scale_3,
-        m_sigma, m_view_batch_size, m_stride, m_seed, set_lora_scale, m_image_input, cb_multidecoder]
+        m_sigma, m_view_batch_size, m_stride, m_seed, set_lora_scale, m_image_input, cb_multidecoder, clip_skip]
         sd_ckpt_file.change(set_checkpoint_model, inputs=sd_ckpt_file, outputs=sd_ckpt_file.value)
         sd_vae_file.change(set_vae_model, inputs=sd_vae_file, outputs=sd_vae_file.value)
         sd_lora_file.change(set_lora_model, inputs=sd_lora_file, outputs=sd_lora_file.value)
