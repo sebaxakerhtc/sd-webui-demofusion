@@ -42,8 +42,8 @@ But if you will set image size 1401 x 2048 - the original image size of generate
 bad resolution for SDXL.
 
 To do:
-~~- img2img~~
-- ~~- LoRA support~~
+- ~~img2img~~
+- ~~LoRA support~~
 - ControlNet, maybe...
 - Custom resolutions
 - SD 1.5 adaptation? Maybe...
