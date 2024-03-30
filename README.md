@@ -6,12 +6,22 @@
 
 [Original project GitHub](https://github.com/PRIS-CV/DemoFusion)
 
+30.03.2024
+- added img2img
+- added random seed button
+- comact interface
+- added option for multidecoder
+- redesign
+- added `torch_dtype=torch.float16` for VAEs
+- other optimizations
+
 29.03.2024
 - Removed HuggingFace because in a1111 nobody use it
 - added VAE support
 - added LoRA and lora_scale(weight) support
 - random seed on load
-- other optimisations
+- other optimizations
+
 28.03.2024
 - Added support for stable diffusion files
 - Added support for custom HuggingFace models
@@ -31,7 +41,7 @@ But if you will set image size 1401 x 2048 - the original image size of generate
 bad resolution for SDXL.
 
 To do:
-- img2img
+~~- img2img~~
 - ~~- LoRA support~~
 - ControlNet, maybe...
 - Custom resolutions
