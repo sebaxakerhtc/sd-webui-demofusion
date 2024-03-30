@@ -131,7 +131,7 @@ def on_ui_tabs():
                     m_num_inference_steps = gr.Slider(minimum=1, maximum=100, step=1, value=30, label="Sampling Steps")
                 with gr.Row():
                     m_height = gr.Slider(minimum=768, maximum=8192, step=8, value=2048, label="Height")
-                    m_guidance_scale = gr.Slider(minimum=1, maximum=20, step=0.1, value=7.5, label="CFG Scale")
+                    m_guidance_scale = gr.Slider(minimum=1.1, maximum=20, step=0.1, value=7.5, label="CFG Scale")
                 with gr.Row():
                     m_seed = gr.Number(scale=90, label="Seed", value=2013)
                     clip_skip = gr.Number(scale=10, label="Clip skip", minimum=1, maximum=12, step=1, value=1)
