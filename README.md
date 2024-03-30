@@ -1,6 +1,6 @@
 # DemoFusion interface inside stable-diffusion-webui
 
-![изображение](https://github.com/sebaxakerhtc/sd-webui-demofusion/assets/32651506/7e12dc76-124f-4d0a-bed6-0c8214585e79)
+![изображение](https://github.com/sebaxakerhtc/sd-webui-demofusion/assets/32651506/aba90b16-0154-4274-9781-3ad38aadf49c)
 
 [Original project](https://ruoyidu.github.io/demofusion/demofusion.html) 
 
