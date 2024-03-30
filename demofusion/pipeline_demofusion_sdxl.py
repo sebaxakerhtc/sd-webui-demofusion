@@ -335,7 +335,9 @@ class DemoFusionSDXLStableDiffusionPipeline(DiffusionPipeline, FromSingleFileMix
                     prompt_embeds = prompt_embeds.hidden_states[-2]
                 else:
                     # "2" because SDXL always indexes from the penultimate layer.
-                    prompt_embeds = prompt_embeds.hidden_states[-(clip_skip + 2)]
+                    prompt_embeds = prompt_embeds.hidden_states[-(clip_skip)]
+                    # SDXL by default work on clip_skip = 2, so editing this for people who familar with Auto1111 
+                    # and for those who set clip_skip to 2 for PonyDiffusion :)
 
                 prompt_embeds_list.append(prompt_embeds)
 
