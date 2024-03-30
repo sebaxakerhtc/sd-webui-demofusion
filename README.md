@@ -41,6 +41,13 @@ The output will be 1401 x 2048, because the largest width/height must be divisib
 But if you will set image size 1401 x 2048 - the original image size of generated image will be 704 x 1024 - it's
 bad resolution for SDXL.
 
+A little table with popular resolutions examples:
+|  Original  |      x2     |      x3     |
+| ---------- | ----------- | ----------- |
+| 768 x 1024 | 2304 x 3072 | 3072 x 4096 |
+| 832 x 1216 | 1664 x 2432 | 2496 x 3648 |
+| 864 x 1152 | 1728 x 2304 | 2592 x 3456 |
+
 To do:
 - ~~img2img~~
 - ~~LoRA support~~
