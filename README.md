@@ -8,8 +8,9 @@
 
 30.03.2024
 - added img2img
-- added random seed button
+- added clip_skip option
 - comact interface
+- added random seed button
 - added option for multidecoder
 - redesign
 - added `torch_dtype=torch.float16` for VAEs
