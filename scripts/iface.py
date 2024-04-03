@@ -121,7 +121,7 @@ def on_ui_tabs():
                                        info="Stable Diffusion Model", scale=30)
             sd_vae_file = gr.Dropdown(vae_list, label="VAE (optional)", info="Vae Model", scale=30)
             sd_lora_file = gr.Dropdown(lora_list, label="LoRA (optional)", info="LoRA Model", scale=30)
-            set_lora_scale = gr.Slider(minimum=0, maximum=1, step=0.01, value=0.85, label="Weight", info="Lora scale",
+            set_lora_scale = gr.Slider(minimum=0, maximum=2, step=0.01, value=0.85, label="Weight", info="Lora scale",
                                        scale=10)
         with gr.Row():
             with gr.Column(scale=40):
