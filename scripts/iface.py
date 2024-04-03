@@ -114,11 +114,12 @@ def on_ui_tabs():
     networks.available_networks
     model_list = shared_items.list_checkpoint_tiles(False)
     lora_list = ['Not used'] + [lora.filename for lora in networks.available_networks.values()]
+    vae_list = ['Not used'] + list(sd_vae.vae_dict)
     with gr.Blocks(analytics_enabled=False) as DF_Blocks:
         with gr.Row():
             sd_ckpt_file = gr.Dropdown(model_list, label="Model (Only SDXL Models are supported for now)",
                                        info="Stable Diffusion Model", scale=30)
-            sd_vae_file = gr.Dropdown(list(sd_vae.vae_dict), label="VAE (optional)", info="Vae Model", scale=30)
+            sd_vae_file = gr.Dropdown(vae_list, label="VAE (optional)", info="Vae Model", scale=30)
             sd_lora_file = gr.Dropdown(lora_list, label="LoRA (optional)", info="LoRA Model", scale=30)
             set_lora_scale = gr.Slider(minimum=0, maximum=1, step=0.01, value=0.85, label="Weight", info="Lora scale",
                                        scale=10)
