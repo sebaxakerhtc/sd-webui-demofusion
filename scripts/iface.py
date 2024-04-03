@@ -18,9 +18,9 @@ ROOT_DIR = Path().absolute()
 model_dir = "Stable-diffusion"
 vae_dir = "VAE"
 lora_dir = "Lora"
-model_path = os.path.abspath(os.path.join(paths.models_path, model_dir))
-vae_path = os.path.abspath(os.path.join(paths.models_path, vae_dir))
-lora_path = os.path.abspath(os.path.join(paths.models_path, lora_dir))
+model_path = shared.cmd_opts.ckpt_dir
+vae_path = shared.cmd_opts.vae_dir
+lora_path = shared.cmd_opts.lora_dir
 model_list = modelloader.load_models(model_path=model_path, ext_filter=[".ckpt", ".safetensors"])
 vae_list = modelloader.load_models(model_path=vae_path, ext_filter=[".ckpt", ".safetensors"])
 vae_list.append("Not used")
