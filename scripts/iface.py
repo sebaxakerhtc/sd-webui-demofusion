@@ -1,16 +1,15 @@
 import gradio as gr
 from pathlib import Path
-from modules import script_callbacks, shared, paths, modelloader
+from modules import script_callbacks, shared, modelloader
 from diffusers.models import AutoencoderKL
-import json
-import os
-import torch, gc
 from torchvision import transforms
 from PIL import Image
-import os.path
 import random
 
+import gc
+import torch
 from demofusion.pipeline_demofusion_sdxl import DemoFusionSDXLStableDiffusionPipeline
+
 
 # from gradio_imageslider import ImageSlider
 
