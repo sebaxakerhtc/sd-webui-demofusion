@@ -1,6 +1,6 @@
 import gradio as gr
-from pathlib import Path
-from modules import script_callbacks, shared, modelloader
+from modules import script_callbacks, shared_items, sd_vae, sd_models
+
 from diffusers.models import AutoencoderKL
 from torchvision import transforms
 from PIL import Image
@@ -9,23 +9,6 @@ import random
 import gc
 import torch
 from demofusion.pipeline_demofusion_sdxl import DemoFusionSDXLStableDiffusionPipeline
-
-
-# from gradio_imageslider import ImageSlider
-
-# Webui root path
-ROOT_DIR = Path().absolute()
-model_dir = "Stable-diffusion"
-vae_dir = "VAE"
-lora_dir = "Lora"
-model_path = shared.cmd_opts.ckpt_dir
-vae_path = shared.cmd_opts.vae_dir
-lora_path = shared.cmd_opts.lora_dir
-model_list = modelloader.load_models(model_path=model_path, ext_filter=[".ckpt", ".safetensors"])
-vae_list = modelloader.load_models(model_path=vae_path, ext_filter=[".ckpt", ".safetensors"])
-vae_list.append("Not used")
-lora_list = modelloader.load_models(model_path=lora_path, ext_filter=[".safetensors"])
-lora_list.append("Not used")
 
 
 # img2img-part
@@ -62,7 +45,9 @@ def pad_image(image):
 
 def set_checkpoint_model(selected_model):
     global model_ckpt
-    model_ckpt = selected_model
+    found_model = sd_models.get_closet_checkpoint_match(selected_model)
+    if found_model:
+        model_ckpt = found_model.filename
 
 
 def set_vae_model(selected_vae):
@@ -125,12 +110,16 @@ def generate_images(prompt, negative_prompt, width, height, num_inference_steps,
 
 
 def on_ui_tabs():
+    import networks
+    networks.available_networks
+    model_list = shared_items.list_checkpoint_tiles(False)
+    lora_list = ['Not used'] + [lora.filename for lora in networks.available_networks.values()]
     with gr.Blocks(analytics_enabled=False) as DF_Blocks:
         with gr.Row():
-            sd_ckpt_file = gr.Dropdown(sorted(model_list), label="Model (Only SDXL Models are supported for now)",
+            sd_ckpt_file = gr.Dropdown(model_list, label="Model (Only SDXL Models are supported for now)",
                                        info="Stable Diffusion Model", scale=30)
-            sd_vae_file = gr.Dropdown(sorted(vae_list), label="VAE (optional)", info="Vae Model", scale=30)
-            sd_lora_file = gr.Dropdown(sorted(lora_list), label="LoRA (optional)", info="LoRA Model", scale=30)
+            sd_vae_file = gr.Dropdown(list(sd_vae.vae_dict), label="VAE (optional)", info="Vae Model", scale=30)
+            sd_lora_file = gr.Dropdown(lora_list, label="LoRA (optional)", info="LoRA Model", scale=30)
             set_lora_scale = gr.Slider(minimum=0, maximum=1, step=0.01, value=0.85, label="Weight", info="Lora scale",
                                        scale=10)
         with gr.Row():
