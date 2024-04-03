@@ -6,6 +6,10 @@
 
 [Original project GitHub](https://github.com/PRIS-CV/DemoFusion)
 
+03.04.2024
+- fixed paths with thanks to [@w-e-w](https://github.com/w-e-w)
+- added to Extensions list of Automatic1111
+
 30.03.2024
 - added img2img
 - added clip_skip option
@@ -30,8 +34,17 @@
 - something else?
 
 ## Installation:
+#### Easy way
+Just install it directly from the Extensions tab
+
+#### or (middle way)
+
 Extensions => Install from URL => `https://github.com/sebaxakerhtc/sd-webui-demofusion.git` => Install
 Then switch to installed tab, click Apply and restart UI
+
+#### or (hardcore XD)
+
+`git clone https://github.com/sebaxakerhtc/sd-webui-demofusion.git` from commandline inside Extensions folder
 
 ## Usage:
 Just input a double (triple, etc.) size of the image you want to generate and wait for your image.
