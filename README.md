@@ -6,6 +6,9 @@
 
 [Original project GitHub](https://github.com/PRIS-CV/DemoFusion)
 
+<details>
+<summary><b>Changelog</b></summary>
+
 03.04.2024
 - fixed paths with thanks to [@w-e-w](https://github.com/w-e-w)
 - added to Extensions list of Automatic1111
@@ -32,6 +35,7 @@
 - Added support for custom HuggingFace models
 - Rebuild UI
 - something else?
+</details>
 
 ## Installation:
 #### Easy way
