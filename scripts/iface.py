@@ -52,8 +52,7 @@ def set_checkpoint_model(selected_model):
 
 def set_vae_model(selected_vae):
     global model_vae
-    model_vae = selected_vae
-
+    model_vae = sd_vae.vae_dict.get(selected_vae, selected_vae)
 
 def set_lora_model(selected_lora):
     global model_lora
