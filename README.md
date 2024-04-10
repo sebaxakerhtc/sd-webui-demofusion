@@ -60,7 +60,7 @@ Then switch to installed tab, click Apply and restart UI
 
 ## Usage:
 Just use your favorite resolutions with random or custom seed, and when you like the image you see,
-change Scale factor, Additional settings (if you need) and click Generate button. Wait for the result. That's it!
+change Scale factor, Additional settings (if you need) and click Generate button. Wait for the result. That's it!<br />
 !!! Stride is at half of a real value when using SD1.5 base !!!
 
 To do:
