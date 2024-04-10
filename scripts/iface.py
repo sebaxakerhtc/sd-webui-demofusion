@@ -74,6 +74,7 @@ def generate_images(prompt, negative_prompt, width, height, num_inference_steps,
     
     if model_base == "SD1.5":
         pipebase = DemoFusionSDStableDiffusionPipeline
+        stride = stride / 2
     else:
         pipebase = DemoFusionSDXLStableDiffusionPipeline
 

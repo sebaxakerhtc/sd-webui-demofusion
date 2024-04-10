@@ -569,7 +569,7 @@ class DemoFusionSDStableDiffusionPipeline(DiffusionPipeline, TextualInversionLoa
         latents = latents * self.scheduler.init_noise_sigma
         return latents
 
-    def get_views(self, height, width, window_size=128, stride=64, random_jitter=False):
+    def get_views(self, height, width, window_size=64, stride=32, random_jitter=False):
         # Here, we define the mappings F_i (see Eq. 7 in the MultiDiffusion paper https://arxiv.org/abs/2302.08113)
         # if panorama's height/width < window_size, num_blocks of height/width should return 1
         height //= self.vae_scale_factor
@@ -628,7 +628,7 @@ class DemoFusionSDStableDiffusionPipeline(DiffusionPipeline, TextualInversionLoa
         pad_size = self.unet.config.sample_size // 8 * 3
         decoder_view_batch_size = 1
         
-        views = self.get_views(current_height, current_width, stride=core_stride, window_size=core_size)
+        views = self.get_views(current_height, current_width, window_size=core_size, stride=core_stride)
         views_batch = [views[i : i + decoder_view_batch_size] for i in range(0, len(views), decoder_view_batch_size)]
         latents_ = F.pad(latents, (pad_size, pad_size, pad_size, pad_size), 'constant', 0)
         image = torch.zeros(latents.size(0), 3, current_height, current_width).to(latents.device)
@@ -701,13 +701,14 @@ class DemoFusionSDStableDiffusionPipeline(DiffusionPipeline, TextualInversionLoa
         image_lr: Optional[torch.FloatTensor] = None,
         view_batch_size: int = 16,
         multi_decoder: bool = True,
-        stride: Optional[int] = 64,
+        stride: Optional[int] = 32,
         cosine_scale_1: Optional[float] = 3.,
         cosine_scale_2: Optional[float] = 1.,
         cosine_scale_3: Optional[float] = 1.,
         sigma: Optional[float] = 1.0,
         show_image: bool = False,
         lowvram: bool = False,
+        scale_num: int = 1,
     ):
         """
         The call function to the pipeline for generation.
@@ -774,7 +775,7 @@ class DemoFusionSDStableDiffusionPipeline(DiffusionPipeline, TextualInversionLoa
             multi_decoder (`bool`, defaults to True):
                 Determine whether to use a tiled decoder. Generally, when the resolution exceeds 3072x3072, 
                 a tiled decoder becomes necessary.
-            stride (`int`, defaults to 64):
+            stride (`int`, defaults to 32):
                 The stride of moving local patches. A smaller stride is better for alleviating seam issues,
                 but it also introduces additional computational overhead and inference time.
             cosine_scale_1 (`float`, defaults to 3):
@@ -796,16 +797,10 @@ class DemoFusionSDStableDiffusionPipeline(DiffusionPipeline, TextualInversionLoa
         Returns:
             a `list` with the generated images at each phase.
         """
-        # 0. Default height and width to unet
-        height = height or self.unet.config.sample_size * self.vae_scale_factor
-        width = width or self.unet.config.sample_size * self.vae_scale_factor
+        # 0. Removed part: Default height and width to unet
+        # only aspect ratio will be used
+        aspect_ratio = min(height, width) / max(height, width)
 
-        x1_size = self.default_sample_size * self.vae_scale_factor
-
-        height_scale = height / x1_size
-        width_scale = width / x1_size
-        scale_num = int(max(height_scale, width_scale))
-        aspect_ratio = min(height_scale, width_scale) / max(height_scale, width_scale)
         # to deal with lora scaling and other possible forward hooks
 
         # 1. Check inputs. Raise error if not correct
@@ -856,8 +851,8 @@ class DemoFusionSDStableDiffusionPipeline(DiffusionPipeline, TextualInversionLoa
         latents = self.prepare_latents(
             batch_size * num_images_per_prompt,
             num_channels_latents,
-            height // scale_num,
-            width // scale_num,
+            height,
+            width,
             prompt_embeds.dtype,
             device,
             generator,
@@ -947,8 +942,8 @@ class DemoFusionSDStableDiffusionPipeline(DiffusionPipeline, TextualInversionLoa
         
         for current_scale_num in range(2, scale_num + 1):
             print("### Phase {} Denoising ###".format(current_scale_num))
-            current_height = self.unet.config.sample_size * self.vae_scale_factor * current_scale_num
-            current_width = self.unet.config.sample_size * self.vae_scale_factor * current_scale_num
+            current_height = max(width, height) * current_scale_num
+            current_width = max(width, height) * current_scale_num
             if height > width:
                 current_width = int(current_width * aspect_ratio)
             else:
@@ -974,7 +969,7 @@ class DemoFusionSDStableDiffusionPipeline(DiffusionPipeline, TextualInversionLoa
                     
                     ############################################# MultiDiffusion #############################################
                     
-                    views = self.get_views(current_height, current_width, stride=stride, window_size=self.unet.config.sample_size, random_jitter=True)
+                    views = self.get_views(current_height, current_width, window_size=self.unet.config.sample_size, stride=stride, random_jitter=True)
                     views_batch = [views[i : i + view_batch_size] for i in range(0, len(views), view_batch_size)]
 
                     jitter_range = (self.unet.config.sample_size - stride) // 4
