@@ -146,17 +146,17 @@ def on_ui_tabs():
                 m_negative_prompt = gr.Textbox(label="Negative Prompt",
                                                value="blurry, ugly, duplicate, poorly drawn, deformed, mosaic")
                 with gr.Row():
-                    with gr.Column():
+                    with gr.Column(min_width=150):
                         m_width = gr.Slider(minimum=384, maximum=2048, step=8, value=1024, label="Width")
                         m_height = gr.Slider(minimum=384, maximum=2048, step=8, value=1024, label="Height")
-                    with gr.Column():
+                    with gr.Column(min_width=150):
                         m_num_inference_steps = gr.Slider(minimum=1, maximum=100, step=1, value=30, label="Sampling Steps")
                         m_guidance_scale = gr.Slider(minimum=1.1, maximum=20, step=0.1, value=7.5, label="CFG Scale")
                 with gr.Row():
                     scale_num = gr.Slider(minimum=1, maximum=8, step=1, value=1, label="Scale Factor")
                 with gr.Row():
-                    m_seed = gr.Number(scale=90, label="Seed", value=2013)
-                    clip_skip = gr.Number(scale=10, label="Clip skip", minimum=1, maximum=12, step=1, value=2)
+                    m_seed = gr.Number(scale=10, label="Seed", value=2013)
+                    clip_skip = gr.Number(scale=1, min_width=85, label="Clip skip", minimum=1, maximum=12, step=1, value=2)
                 with gr.Accordion('Additional parameters', open=False):
                     m_sigma = gr.Slider(minimum=0.1, maximum=1, step=0.1, value=0.8, label="Sigma")
                     with gr.Row():
