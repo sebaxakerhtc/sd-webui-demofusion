@@ -13,6 +13,7 @@
 - added custom resolutions
 - rebuild UI
 - removed lowvram (Doesn't work with custom resolutions. Only square images works)
+	maybe... some day I will try to solve it. But not now.
 - SD1.5 support is on it's way. All works fine - hard testings. Wait for it!
 - maybe something else...
 
