@@ -126,8 +126,6 @@ def on_ui_tabs():
             with gr.Column(scale=40):
                 with gr.Row():
                     cb_multidecoder = gr.Checkbox(label="Multidecoder", value=True, info="Use multidecoder?")
-                    cb_lowvram = gr.Checkbox(label="Low VRAM (broken)", value=False, interactive=False,
-                                             info="Use multidecoder?")
                 with gr.Accordion('img2img', open=False):
                     m_image_input = gr.Image(type="pil", label="Input Image")
                 m_prompt = gr.Textbox(label="Prompt")
