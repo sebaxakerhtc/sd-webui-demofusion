@@ -707,6 +707,7 @@ class DemoFusionSDXLStableDiffusionPipeline(DiffusionPipeline, FromSingleFileMix
         sigma: Optional[float] = 1.0,
         show_image: bool = False,
         lowvram: bool = False,
+        scale_num: int = 1,
     ):
         r"""
         Function invoked when calling the pipeline for generation.
@@ -862,15 +863,7 @@ class DemoFusionSDXLStableDiffusionPipeline(DiffusionPipeline, FromSingleFileMix
         """
         
         # 0. Default height and width to unet
-        height = height or self.default_sample_size * self.vae_scale_factor
-        width = width or self.default_sample_size * self.vae_scale_factor
-
-        x1_size = self.default_sample_size * self.vae_scale_factor
-
-        height_scale = height / x1_size
-        width_scale = width / x1_size
-        scale_num = int(max(height_scale, width_scale))
-        aspect_ratio = min(height_scale, width_scale) / max(height_scale, width_scale)
+        aspect_ratio = min(height, width) / max(height, width)
 
         original_size = original_size or (height, width)
         target_size = target_size or (height, width)
@@ -951,8 +944,8 @@ class DemoFusionSDXLStableDiffusionPipeline(DiffusionPipeline, FromSingleFileMix
         latents = self.prepare_latents(
             batch_size * num_images_per_prompt,
             num_channels_latents,
-            height // scale_num,
-            width // scale_num,
+            height,
+            width,
             prompt_embeds.dtype,
             device,
             generator,
@@ -1108,8 +1101,8 @@ class DemoFusionSDXLStableDiffusionPipeline(DiffusionPipeline, FromSingleFileMix
                 self.unet.to(device)
                 torch.cuda.empty_cache()
             print("### Phase {} Denoising ###".format(current_scale_num))
-            current_height = self.unet.config.sample_size * self.vae_scale_factor * current_scale_num
-            current_width = self.unet.config.sample_size * self.vae_scale_factor * current_scale_num
+            current_height = max(width, height) * current_scale_num
+            current_width = max(width, height) * current_scale_num
             if height > width:
                 current_width = int(current_width * aspect_ratio)
             else:
