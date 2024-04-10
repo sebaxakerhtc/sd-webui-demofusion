@@ -17,7 +17,6 @@ from demofusion.pipeline_demofusion_sd import DemoFusionSDStableDiffusionPipelin
 def load_and_process_image(pil_image):
     transform = transforms.Compose(
         [
-            transforms.Resize((1024, 1024)),
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
         ]
@@ -25,25 +24,6 @@ def load_and_process_image(pil_image):
     image = transform(pil_image)
     image = image.unsqueeze(0).half()
     return image
-
-
-def pad_image(image):
-    w, h = image.size
-    if w == h:
-        return image
-    elif w > h:
-        new_image = Image.new(image.mode, (w, w), (0, 0, 0))
-        pad_w = 0
-        pad_h = (w - h) // 2
-        new_image.paste(image, (0, pad_h))
-        return new_image
-    else:
-        new_image = Image.new(image.mode, (h, h), (0, 0, 0))
-        pad_w = (h - w) // 2
-        pad_h = 0
-        new_image.paste(image, (pad_w, 0))
-        return new_image
-
 
 def set_checkpoint_model(selected_model):
     global model_ckpt
@@ -67,8 +47,7 @@ def generate_images(prompt, negative_prompt, width, height, num_inference_steps,
                     cosine_scale_2, cosine_scale_3, sigma, view_batch_size, stride, seed, set_lora_scale, input_image,
                     cb_multidecoder, clip_skip, scale_num):
     if input_image:
-        padded_image = pad_image(input_image).resize((1024, 1024)).convert("RGB")
-        image_lr = load_and_process_image(padded_image).to('cuda')
+        image_lr = load_and_process_image(input_image).to('cuda')
     else:
         image_lr = None
     
