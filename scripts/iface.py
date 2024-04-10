@@ -87,7 +87,7 @@ def generate_images(prompt, negative_prompt, width, height, num_inference_steps,
                   num_inference_steps=int(num_inference_steps), guidance_scale=guidance_scale,
                   cosine_scale_1=cosine_scale_1, cosine_scale_2=cosine_scale_2, cosine_scale_3=cosine_scale_3,
                   sigma=sigma,
-                  multi_decoder=bool(cb_multidecoder), show_image=False, lowvram=False, image_lr=image_lr,
+                  multi_decoder=bool(cb_multidecoder), show_image=False, image_lr=image_lr,
                   clip_skip=int(clip_skip), scale_num=int(scale_num)
                   )
 
@@ -108,18 +108,21 @@ def on_ui_tabs():
     base_list = ['SDXL', 'SD1.5']
     with gr.Blocks(analytics_enabled=False) as DF_Blocks:
         with gr.Row():
-            sd_ckpt_file = gr.Dropdown(model_list, label="Model (Only SDXL Models are supported for now)",
-                                       info="Stable Diffusion Model", scale=30)
+            sd_ckpt_file = gr.Dropdown(model_list, label="Model", info="Stable Diffusion Model", scale=30)
+            setattr(sd_ckpt_file,"do_not_save_to_config",True)
             sd_vae_file = gr.Dropdown(vae_list, label="VAE (optional)", info="Vae Model", scale=30)
+            setattr(sd_vae_file,"do_not_save_to_config",True)
             sd_lora_file = gr.Dropdown(lora_list, label="LoRA (optional)", info="LoRA Model", scale=30)
+            setattr(sd_lora_file,"do_not_save_to_config",True)
             set_lora_scale = gr.Slider(minimum=0, maximum=2, step=0.01, value=0.85, label="Weight", info="Lora scale",
                                        scale=10)
         with gr.Row():
             with gr.Column(scale=40):
                 with gr.Row():
                     base_model = gr.Dropdown(base_list, label="Base Model")
+                    setattr(base_model,"do_not_save_to_config",True)
                     cb_multidecoder = gr.Checkbox(label="Multidecoder", value=True, info="Use multidecoder?")
-                with gr.Accordion('img2img', open=False):
+                with gr.Accordion('img2img (SDXL works only with square images)', open=False):
                     m_image_input = gr.Image(type="pil", label="Input Image")
                 m_prompt = gr.Textbox(label="Prompt")
                 m_negative_prompt = gr.Textbox(label="Negative Prompt",
