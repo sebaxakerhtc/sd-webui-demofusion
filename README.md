@@ -14,7 +14,7 @@
 - rebuild UI
 - removed lowvram (Doesn't work with custom resolutions. Only square images works)<br />
 	maybe... some day I will try to solve it. But not now.
-- SD1.5 support is on it's way. All works fine - hard testings. Wait for it!
+- SD1.5 support!
 - maybe something else...
 
 03.04.2024
@@ -61,6 +61,7 @@ Then switch to installed tab, click Apply and restart UI
 ## Usage:
 Just use your favorite resolutions with random or custom seed, and when you like the image you see,
 change Scale factor, Additional settings (if you need) and click Generate button. Wait for the result. That's it!
+!!! Stride is at half of a real value when using SD1.5 base !!!
 
 To do:
 - ~~img2img~~
