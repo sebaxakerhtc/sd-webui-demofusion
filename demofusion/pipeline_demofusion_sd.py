@@ -875,8 +875,6 @@ class DemoFusionSDStableDiffusionPipeline(DiffusionPipeline, TextualInversionLoa
         
     ###################################################### Phase Initialization ########################################################
 
-    ###################################################### Phase Initialization ########################################################
-
         if image_lr == None:
             print("### Phase 1 Denoising ###")
             with self.progress_bar(total=num_inference_steps) as progress_bar:
