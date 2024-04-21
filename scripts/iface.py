@@ -1,6 +1,6 @@
 import gradio as gr
 from modules import script_callbacks, shared_items, sd_vae, sd_models, images
-from modules.shared import opts
+from modules.paths_internal import default_output_dir
 
 from diffusers.models import AutoencoderKL
 from diffusers import EulerDiscreteScheduler
@@ -14,7 +14,7 @@ import torch
 from demofusion.pipeline_demofusion_sdxl import DemoFusionSDXLStableDiffusionPipeline
 from demofusion.pipeline_demofusion_sd import DemoFusionSDStableDiffusionPipeline
 
-df_out = os.path.join(opts.outdir_txt2img_samples, 'demofusion')
+df_out = os.path.join(default_output_dir, 'demofusion')
 
 # img2img-part
 def load_and_process_image(pil_image):
@@ -94,8 +94,35 @@ def generate_images(prompt, negative_prompt, width, height, num_inference_steps,
                   clip_skip=int(clip_skip), scale_num=int(scale_num)
                   )
 
-    images.save_image(df_images[0], df_out, 'demofusion_')
-    images.save_image(df_images[-1], df_out, 'demofusion_')
+    df_info = [
+            f'Prompt: {prompt}',
+            f'Negative prompt: {negative_prompt}',
+            f'Width: {width}',
+            f'Height: {height}',
+            f'Steps: {num_inference_steps}',
+            f'CFG Scale: {guidance_scale}',
+            f'Seed: {int(seed)}',
+            f'Clip skip: {int(clip_skip)}']
+
+    df_info_ext = [
+            f'Prompt: {prompt}',
+            f'Negative prompt: {negative_prompt}',
+            f'Width: {width}',
+            f'Height: {height}',
+            f'Steps: {num_inference_steps}',
+            f'CFG Scale: {guidance_scale}',
+            f'C1: {cosine_scale_1}',
+            f'C2: {cosine_scale_2}',
+            f'C3: {cosine_scale_3}',
+            f'Sigma: {sigma}',
+            f'View batch size: {view_batch_size}',
+            f'Stride: {stride}',
+            f'Seed: {int(seed)}',
+            f'Clip skip: {int(clip_skip)}',
+            f'Scale: x{scale_num}']
+
+    images.save_image(df_images[0], df_out, 'df', int(seed), info=df_info, pnginfo_section_name='DemoFusion')
+    images.save_image(df_images[-1], df_out, 'df', int(seed), info=df_info_ext, pnginfo_section_name='DemoFusion')
     pipe = None
     gc.collect()
     torch.cuda.empty_cache()
