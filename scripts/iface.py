@@ -1,5 +1,6 @@
 import gradio as gr
-from modules import script_callbacks, shared_items, sd_vae, sd_models
+from modules import script_callbacks, shared_items, sd_vae, sd_models, images
+from modules.shared import opts
 
 from diffusers.models import AutoencoderKL
 from diffusers import EulerDiscreteScheduler
@@ -7,11 +8,13 @@ from torchvision import transforms
 from PIL import Image
 import random
 
+import os
 import gc
 import torch
 from demofusion.pipeline_demofusion_sdxl import DemoFusionSDXLStableDiffusionPipeline
 from demofusion.pipeline_demofusion_sd import DemoFusionSDStableDiffusionPipeline
 
+df_out = os.path.join(opts.outdir_txt2img_samples, 'demofusion')
 
 # img2img-part
 def load_and_process_image(pil_image):
@@ -82,7 +85,7 @@ def generate_images(prompt, negative_prompt, width, height, num_inference_steps,
     generator = torch.Generator(device='cuda')
     generator = generator.manual_seed(int(seed))
 
-    images = pipe(prompt, negative_prompt=negative_prompt, generator=generator,
+    df_images = pipe(prompt, negative_prompt=negative_prompt, generator=generator,
                   height=int(height), width=int(width), view_batch_size=int(view_batch_size), stride=int(stride),
                   num_inference_steps=int(num_inference_steps), guidance_scale=guidance_scale,
                   cosine_scale_1=cosine_scale_1, cosine_scale_2=cosine_scale_2, cosine_scale_3=cosine_scale_3,
@@ -91,12 +94,13 @@ def generate_images(prompt, negative_prompt, width, height, num_inference_steps,
                   clip_skip=int(clip_skip), scale_num=int(scale_num)
                   )
 
-    for i, image in enumerate(images):
-        image.save('image_' + str(i) + '.png')
+    images.save_image(df_images[0], df_out, 'demofusion_')
+    images.save_image(df_images[-1], df_out, 'demofusion_')
     pipe = None
     gc.collect()
     torch.cuda.empty_cache()
-    return images[0], images[-1]
+
+    return df_images[0], df_images[-1]
 
 
 def on_ui_tabs():
